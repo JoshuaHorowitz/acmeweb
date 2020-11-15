@@ -27,6 +27,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -39,7 +40,9 @@ public class ServerStatusControllerTests {
     @Test
     public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
 
-        this.mockMvc.perform(get("/server/status")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/server/status"))
+                .andDo(print())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusDesc").value("Server is up"));
     }
 
@@ -47,8 +50,86 @@ public class ServerStatusControllerTests {
     public void paramGreetingShouldReturnTailoredMessage() throws Exception {
 
         this.mockMvc.perform(get("/server/status").param("name", "RebYid"))
-                .andDo(print()).andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.contentHeader").value("Server Status requested by RebYid"));
     }
 
+    @Test
+    public void paramNoDetailsError() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed")).andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(status().reason(is("You have given no details in your detail list.")));
+    }
+
+    @Test
+    public void paramArgumentsWithOperationsMessage() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed?details=operations")).andDo(print())
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and the operations are processing"));
+    }
+
+    @Test
+    public void paramArgumentsWithOperationsAndExtensionsMessage() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed?details=operations,extensions")).andDo(print())
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and the operations are processing, and the extensions are Hypervisor, RAID-6"));
+    }
+
+    @Test
+    public void paramArgumentsWithOperationsAndExtensionsAndMemoryMessage() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed?details=operations,extensions")).andDo(print())
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and the operations are processing, and the extensions are Hypervisor, RAID-6, and the memory is full"));
+    }
+
+    @Test
+    public void paramArgumentsWithOperationsAndExtensionsSentByNoahMessage() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed?name=Noah,?details=operations,extensions")).andDo(print())
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and the operations are processing, and the extensions are Hypervisor, RAID-6"));
+    }
+
+    @Test
+    public void paramArgumentsWithOperationsAndExtensionsAndMemorySentByNoahMessage() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed?name=Noah,?details=operations,extensions")).andDo(print())
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and the operations are processing, and the extensions are Hypervisor, RAID-6, and the memory is full"));
+    }
+
+    @Test
+    public void paramArgumentsWithOperationsAndMemoryAndSentByNoachExtensions() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed?details=operations,memory?name=Noach")).andDo(print())
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and the operations are processing, and memory is full"));
+    }
+
+    @Test
+    public void paramArgumentsWithMemoryAndExtensionsSentByNoahMessage() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed?name=Noah,?details=extensions,memory")).andDo(print())
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and the extensions are Hypervisor, RAID-6, and the operations are processing"));
+    }
+
+    @Test
+    public void paramArgumentsWithOperationsAndExtensionsAndOperationsAndMemorySentByNoahMessage() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed?name=Noah,memory,operations,extensions,memory")).andDo(print())
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and the memory is full, and the operations are processing, and the extensions are Hypervisor, RAID-6, and the memory is full"));
+    }
+
+    @Test
+    public void paramWithBadArguments() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed?details=memory,operations,junkError")).andDo(print())
+                .andDo(print())
+                .andExpect(status().reason(is("You have invalid details in your detail list.")));
+    }
 }
