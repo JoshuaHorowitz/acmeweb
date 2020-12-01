@@ -11,7 +11,7 @@ public class ServerStatusMemory extends StatusDecorator {
 
     @Override
     public String getStatusDesc() {
-        return super.getStatusDesc() + ServerManager.getCurrentServerMemory();
+        return super.getStatusDesc() + ", and the memory is " + ServerManager.getCurrentServerMemory();
     }
 
     @Override

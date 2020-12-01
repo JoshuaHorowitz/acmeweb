@@ -11,7 +11,7 @@ public class ServerStatusOperations extends StatusDecorator {
 
     @Override
     public String getStatusDesc() {
-        return super.getStatusDesc() + ServerManager.getCurrentServerOperations();
+        return super.getStatusDesc() + ", and is operating " + ServerManager.getCurrentServerOperations();
     }
 
     @Override

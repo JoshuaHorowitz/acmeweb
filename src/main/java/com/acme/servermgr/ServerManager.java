@@ -17,7 +17,7 @@ public class ServerManager {
     }
 
     static public String getCurrentServerMemory() {
-        return ", and the memory is full"; //The server's memory is full
+        return "running low"; //The server's memory is full
     }
 
     static public String getCurrentServerExtensions() {
@@ -25,7 +25,7 @@ public class ServerManager {
     }
 
     static public String getCurrentServerOperations() {
-        return ", and the operations are processing"; //The server's operations are searching
+        return "normally"; //The server's operations are searching
     }
 
 

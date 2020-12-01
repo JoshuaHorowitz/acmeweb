@@ -11,7 +11,7 @@ public class ServerStatusExtensions extends StatusDecorator {
 
     @Override
     public String getStatusDesc() {
-        return super.getStatusDesc() + ServerManager.getCurrentServerExtensions();
+        return super.getStatusDesc() + ", and its extensions are [" + ServerManager.getCurrentServerExtensions() + "]";
     }
 
     @Override
