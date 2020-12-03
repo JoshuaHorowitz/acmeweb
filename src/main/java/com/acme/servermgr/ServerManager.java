@@ -16,6 +16,19 @@ public class ServerManager {
         return "up";  // The server is up
     }
 
+    static public String getCurrentServerMemory() {
+        return "running low"; //The server's memory is running low
+    }
+
+    static public String getCurrentServerExtensions() {
+        return "Hypervisor, RAID-6"; //The server's extensions are hypervisor and raid-6
+    }
+
+    static public String getCurrentServerOperations() {
+        return "normally"; //The server's operations are operating normally
+    }
+
+
     /**
      * Find out if this server is operating normally
      * @return Boolean indicating if server is operating normally
