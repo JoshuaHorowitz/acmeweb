@@ -2,6 +2,9 @@ package com.acme.statusmgr.beans;
 
 import com.acme.servermgr.ServerManager;
 
+/**
+ * Decorator for ServerStatus that outputs the state of the server - whether operating normally or otherwise
+ */
 public class ServerStatusOperations extends StatusDecorator {
 
 

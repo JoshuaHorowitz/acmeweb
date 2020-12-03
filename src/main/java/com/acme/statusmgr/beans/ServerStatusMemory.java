@@ -2,6 +2,9 @@ package com.acme.statusmgr.beans;
 
 import com.acme.servermgr.ServerManager;
 
+/**
+ * Decorator for ServerStatus that outputs how much memory the server is using
+ */
 public class ServerStatusMemory extends StatusDecorator {
 
 

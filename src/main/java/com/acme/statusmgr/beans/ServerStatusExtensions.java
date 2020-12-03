@@ -2,6 +2,10 @@ package com.acme.statusmgr.beans;
 
 import com.acme.servermgr.ServerManager;
 
+
+/**
+ * Decorator for ServerStatus that outputs the extensions that the server is operating with
+ */
 public class ServerStatusExtensions extends StatusDecorator {
 
 

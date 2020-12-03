@@ -17,15 +17,15 @@ public class ServerManager {
     }
 
     static public String getCurrentServerMemory() {
-        return "running low"; //The server's memory is full
+        return "running low"; //The server's memory is running low
     }
 
     static public String getCurrentServerExtensions() {
-        return ", and the extensions are Hypervisor, RAID-6"; //The server's extensions are
+        return "Hypervisor, RAID-6"; //The server's extensions are hypervisor and raid-6
     }
 
     static public String getCurrentServerOperations() {
-        return "normally"; //The server's operations are searching
+        return "normally"; //The server's operations are operating normally
     }
 
 

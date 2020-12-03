@@ -39,13 +39,27 @@ public class StatusController {
         return new ServerStatus(counter.incrementAndGet(), String.format(template, name));
     }
 
+
+    /**
+     *
+     * @param name
+     * @param details
+     * @return
+     * @throws BadDetailsException
+     * @throws EmptyDetailsException
+     * Receives the request for a server status, and then decorates that request in order to return
+     * a specialized string of the servers status, operations, memory, etc.
+     * Example: /server/status/detailed?details=operations,extensions&name=Noah
+     *  should return 'Server is up, and is operating normally, and its extensions are [Hypervisor, RAID-6]'
+     */
     @RequestMapping("/status/detailed")
     public StatusInterface getDetails(
             @RequestParam(value="name", defaultValue="Anonymous") String name,
             @RequestParam(value="details", defaultValue="Null") List<String> details) throws BadDetailsException, EmptyDetailsException {
         System.out.println("***DEBUG INFO ***" + details);
         StatusInterface status = getStatus(name);
-        if(details != null) {
+        if(details != null) { //ie: if the details are not empty
+            //Where decoration happens
             for (String s : details) {
                 if (s.equals("operations")) {
                     status = new ServerStatusOperations(status);
@@ -54,6 +68,7 @@ public class StatusController {
                 } else if (s.equals("memory")) {
                     status = new ServerStatusMemory(status);
                 } else {
+                    //whatever details were given were not part of the allowed set of details
                     throw new BadDetailsException();
                 }
             }

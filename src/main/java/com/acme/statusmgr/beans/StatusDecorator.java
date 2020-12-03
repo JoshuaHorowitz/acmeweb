@@ -8,6 +8,7 @@ Abstract decorator class to add more functionality to the ServerStatus.
 public abstract class StatusDecorator implements StatusInterface {
     StatusInterface status;
 
+    //Takes StatusInterface as parameter to enable decoration of ServerStatus to occur
     public StatusDecorator(StatusInterface s) {
         this.status = s;
     }
